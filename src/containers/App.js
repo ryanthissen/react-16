@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
-import Person from './Person/Person'
+import styles from './App.module.css';
+import Person from './Person/Person';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
 
@@ -45,52 +46,40 @@ class App extends Component {
   }
 
   render() {
-    const styles = {
-      buttonStyle: {
-        backgroundColor: 'green',
-        color: 'white',
-        font: 'inherit',
-        border: '1px solid black',
-        padding: '8px',
-        cursor: 'pointer',
-      }
-    }
-
     let persons = null;
 
     if(this.state.showPersons){
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-            return (<Person 
-              key={person.id}
+            return (<ErrorBoundary  key={person.id}>
+              <Person 
               name={person.name}
               age={person.age} 
               click={() => this.deletePersonHandler(index)}
-              change={(event) => this.nameChangedHandler(event, person.id)} />)
+              change={(event) => this.nameChangedHandler(event, person.id)} />
+            </ErrorBoundary>)
           })}
         </div>
       );
-
-      styles.buttonStyle.backgroundColor = 'red';
     }
 
     let classes = [];
     if (this.state.persons.length <= 2) {
-      classes.push('red');
+      classes.push(styles.red);
     }
     if (this.state.persons.length <=1) {
-      classes.push('italic');
+      classes.push(styles.italic);
     }
     if (this.state.persons.length <1) {
-      classes.push('bold');
+      classes.push(styles.bold);
     }
     return (
-      <div className="App">
+      <div className={styles.App}>
         <h1>Hi, I'm a React app.</h1>
         <p className={classes.join(' ')}>Testing dynamic classes</p>
-        <button 
-          style={styles.buttonStyle}
+        <button
+          className={this.state.showPersons? styles.Red:''}
           onClick={this.togglePersonsHandler}>
             {this.state.showPersons? 'Hide Persons': 'Show Persons'}
         </button>
