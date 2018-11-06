@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './App.module.css';
-import Person from './Person/Person';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
 
@@ -51,38 +51,22 @@ class App extends Component {
     if(this.state.showPersons){
       persons = (
         <div>
-          {this.state.persons.map((person, index) => {
-            return (<ErrorBoundary  key={person.id}>
-              <Person 
-              name={person.name}
-              age={person.age} 
-              click={() => this.deletePersonHandler(index)}
-              change={(event) => this.nameChangedHandler(event, person.id)} />
-            </ErrorBoundary>)
-          })}
+          <Persons 
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler} 
+          />
         </div>
       );
     }
 
-    let classes = [];
-    if (this.state.persons.length <= 2) {
-      classes.push(styles.red);
-    }
-    if (this.state.persons.length <=1) {
-      classes.push(styles.italic);
-    }
-    if (this.state.persons.length <1) {
-      classes.push(styles.bold);
-    }
     return (
       <div className={styles.App}>
-        <h1>Hi, I'm a React app.</h1>
-        <p className={classes.join(' ')}>Testing dynamic classes</p>
-        <button
-          className={this.state.showPersons? styles.Red:''}
-          onClick={this.togglePersonsHandler}>
-            {this.state.showPersons? 'Hide Persons': 'Show Persons'}
-        </button>
+        <Cockpit
+          title={this.props.title}
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          toggle={this.togglePersonsHandler} />
         {persons}
       </div>
     );
