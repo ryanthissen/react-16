@@ -4,7 +4,7 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
-
+  
   state = {
     persons: [
       { id: 'adfekj2', name: 'Jean', age: 22 },

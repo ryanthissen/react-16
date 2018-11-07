@@ -1,29 +1,35 @@
 import React from 'react';
 import styles from './Cockpit.module.css';
+import Aux from '../../hoc/Aux';
 
 const cockpit = (props) => {
 
   let classes = [];
-    if (props.persons.length <= 2) {
-      classes.push(styles.red);
-    }
-    if (props.persons.length <=1) {
-      classes.push(styles.italic);
-    }
-    if (props.persons.length <1) {
-      classes.push(styles.bold);
-    }
+  let btnClass = styles.Button;
+  if (props.showPersons) {
+    btnClass = [styles.Button, styles.Red].join(' ')
+  };
+
+  if (props.persons.length <= 2) {
+    classes.push(styles.red);
+  }
+  if (props.persons.length <=1) {
+    classes.push(styles.italic);
+  }
+  if (props.persons.length <1) {
+    classes.push(styles.bold);
+  }
   
   return (
-    <div className={styles.Cockpit}>
+    <Aux>
       <h1>{props.title}</h1>
       <p className={classes.join(' ')}>Testing dynamic classes</p>
       <button
-        className={props.showPersons? styles.Red:''}
+        className={btnClass}
         onClick={props.toggle}>
           {props.showPersons? 'Hide Persons': 'Show Persons'}
       </button>
-    </div>
+    </Aux>
   )
 }
 
