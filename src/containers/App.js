@@ -4,7 +4,10 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import WithClass from '../hoc/WithClass';
 
+export const AuthContext = React.createContext(false);
+
 class App extends Component {
+
 
   state = {
     persons: [
@@ -13,6 +16,7 @@ class App extends Component {
       { id: 'hgrr4', name: 'Stephanie', age: 11 }
     ],
     showPersons: false,
+    authenticated: false,
   }
 
   nameChangedHandler = (event, id) => {
@@ -46,13 +50,19 @@ class App extends Component {
     })
   }
 
+  logUserInHandler = () => {
+    this.setState({
+      authenticated: true,
+    })
+  }
+
   render() {
     let persons = null;
 
     if(this.state.showPersons){
       persons = (
         <div>
-          <Persons 
+          <Persons
             persons={this.state.persons}
             clicked={this.deletePersonHandler}
             changed={this.nameChangedHandler} 
@@ -67,8 +77,9 @@ class App extends Component {
           title={this.props.title}
           showPersons={this.state.showPersons}
           persons={this.state.persons}
+          login={this.logUserInHandler}
           toggle={this.togglePersonsHandler} />
-        {persons}
+        <AuthContext.Provider value={this.state.authenticated}>{persons}</AuthContext.Provider>
       </WithClass>
     );
   }
